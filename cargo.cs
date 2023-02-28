@@ -8,6 +8,11 @@ namespace cargo
 {
     public class cargo
     {
+        private string sender_adress;
+        private string recipient_adress;
+        private double weight;
+        private double distance;
+
 
     }
 }
