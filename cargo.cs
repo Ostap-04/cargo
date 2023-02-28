@@ -15,7 +15,7 @@ namespace cargo
 
         public Cargo()
         {
-            sender_adress = "Остап і Юля";
+            sender_adress = "Остап і Юля ПМі-26";
             recipient_adress = "Ярошко Сергій Адамович";
             weight = 0.0;
             distance = 0;
