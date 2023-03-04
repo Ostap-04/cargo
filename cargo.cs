@@ -73,6 +73,13 @@ namespace cargo
         {
             return left.weight > right.weight;
         }
-        
+        public static Cargo operator+ (Cargo left, int addDistance)
+        {
+            return new Cargo(left.senderAddress, left.recipientAddress, left.weight, left.distance + addDistance);
+        }
+        public static Cargo operator- (Cargo left, int addDistance)
+        {
+            return new Cargo(left.senderAddress, left.recipientAddress, left.weight, left.distance - addDistance);
+        }
     }
 }
