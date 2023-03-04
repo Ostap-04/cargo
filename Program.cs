@@ -19,7 +19,7 @@
 
             int minDeliveryIndex = 0;
             for(int i = 0; i < size; i++) { 
-                if (cargoList[i].DeliveryPriceCount < cargoList[minDeliveryIndex].DeliveryPriceCount)
+                if (cargoArr[i].deliveryPriceCount < cargoArr[minDeliveryIndex].deliveryPriceCount)
                 {
                     minDeliveryIndex = i; 
                     break;
