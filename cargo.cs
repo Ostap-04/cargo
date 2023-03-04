@@ -8,28 +8,35 @@ namespace cargo
 {
     public class Cargo
     {
-        private string sender_adress;
-        private string recipient_adress;
+        private string senderAdress;
+        private string recipientAdress;
         private double weight;
         private int distance;
 
         public Cargo()
         {
-            sender_adress = "немає даних";
-            recipient_adress = "немає даних";
+            senderAdress = "немає даних";
+            recipientAdress = "немає даних";
             weight = 0.0;
             distance = 0;
         }
         public Cargo(string sender_adress, string recipient_adress, double weight, int distance)
         {
-            this.sender_adress = sender_adress;
-            this.recipient_adress = recipient_adress;
+            this.senderAdress = sender_adress;
+            this.recipientAdress = recipient_adress;
             this.weight = weight;
             this.distance = distance;
         }
+
+        public double deliveryPriceCount
+        {
+            get { return 2.5 * weight * distance; }
+        }
+
         public override string ToString()
         {
-            return $"адреса вiдправника: {sender_adress} \nадреса отримувача: {recipient_adress} \nвага: {weight}, вiдстань транспортування:{distance}\n";
+            return $"адреса вiдправника: {senderAdress} \nадреса отримувача: {recipientAdress} \nвага: {weight}, " +
+                $"вiдстань транспортування: {distance} \nвартiсть доставки: {deliveryPriceCount}";
         }
         public static bool operator< (Cargo left, Cargo right)
         {
@@ -39,5 +46,6 @@ namespace cargo
         {
             return left.weight > right.weight;
         }
+        
     }
 }
