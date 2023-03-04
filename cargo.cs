@@ -8,35 +8,62 @@ namespace cargo
 {
     public class Cargo
     {
-        private string senderAdress;
-        private string recipientAdress;
+        private string senderAddress;
+        private string recipientAddress;
         private double weight;
         private int distance;
 
         public Cargo()
         {
-            senderAdress = "немає даних";
-            recipientAdress = "немає даних";
+            senderAddress = "немає даних";
+            recipientAddress = "немає даних";
             weight = 0.0;
             distance = 0;
         }
-        public Cargo(string sender_adress, string recipient_adress, double weight, int distance)
+        public Cargo(string senderAddress, string recipientAddress, double weight, int distance)
         {
-            this.senderAdress = sender_adress;
-            this.recipientAdress = recipient_adress;
+            this.senderAddress = senderAddress;
+            this.recipientAddress = recipientAddress;
             this.weight = weight;
             this.distance = distance;
         }
 
-        public double deliveryPriceCount
+        public string SenderAddress
+        {
+            get { return senderAddress; }
+            set { senderAddress = value; }
+        }
+        public string RecipientAddress
+        {
+            get { return recipientAddress; }
+            set { recipientAddress = value; }
+        }
+        public double Weight
+        {
+            get { return weight; }
+            set { 
+                if(value > 0.0) weight = value;
+                else weight = 1.0;
+            }
+        }
+        public int Distance
+        {
+            get { return distance; }
+            set {
+                if (value > 0) distance = value;
+                else distance = 1;
+            }
+        }
+
+        public double DeliveryPriceCount
         {
             get { return 2.5 * weight * distance; }
         }
 
         public override string ToString()
         {
-            return $"адреса вiдправника: {senderAdress} \nадреса отримувача: {recipientAdress} \nвага: {weight}, " +
-                $"вiдстань транспортування: {distance} \nвартiсть доставки: {deliveryPriceCount}";
+            return $"адреса вiдправника: {senderAddress} \nадреса отримувача: {recipientAddress} \nвага: {weight}, " +
+                $"вiдстань транспортування: {distance} \nвартiсть доставки: {DeliveryPriceCount}";
         }
         public static bool operator< (Cargo left, Cargo right)
         {
