@@ -4,8 +4,11 @@
     {
         static void Main(string[] args)
         {
+
             Console.OutputEncoding = System.Text.Encoding.UTF8; //українська мова в консолі
 
+
+            //створення екземплярів класу за допомогою конструктора
             Cargo c1 = new Cargo("Address1", "Address2", 10, 100);
             Cargo c2 = new Cargo("Address5", "Address6", 30, 500);
             Cargo c3 = new Cargo("Address3", "Address4", 20, 300);
@@ -31,9 +34,11 @@
             }
 
             Console.Write("\n**************** Друк всіх елементів контейнера ****************\n");
+
             Cargo.PrintList(cargoList);
 
             Console.Write("\n**************** Пошук вантажу з найменшою вартiстю доставки ****************\n");
+
             int size = cargoList.Count;
             int minDeliveryIndex = 0;
             for (int i = 0; i < size; i++)
@@ -67,6 +72,7 @@
             Cargo.PrintList(cargoList);
 
             Console.WriteLine("\n****** Створення нової колекції з одним відправником ******\n");
+
             List<Cargo> senderList = new List<Cargo>();
             Console.WriteLine("Введіть адресу відправника: ");
             string senderTemp = Console.ReadLine();

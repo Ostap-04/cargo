@@ -13,6 +13,7 @@ namespace cargo
         private double weight;
         private int distance;
 
+        //конструктори
         public Cargo()
         {
             senderAddress = "немає даних";
@@ -38,6 +39,7 @@ namespace cargo
             else { this.distance = distance; }
         }
 
+        //властивості
         public string SenderAddress
         {
             get { return senderAddress; }
@@ -63,6 +65,7 @@ namespace cargo
             get { return 2.5 * weight * distance; }
         }
 
+        //перевизначення операторів та методу ToString()
         public override string ToString()
         {
             return $"адреса вiдправника: {senderAddress} \nадреса отримувача: {receiverAddress} \nвага: {weight}, " +
@@ -130,6 +133,7 @@ namespace cargo
             double weight = double.Parse(Console.ReadLine());
             Console.Write("Відстань транспортування: ");
             int distance = int.Parse(Console.ReadLine());
+            Console.WriteLine();
 
             return new Cargo(senderAdd, receiverAdd, weight, distance);
         }
