@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace cargo
 {
-    public class Cargo
+    public class Cargo: IComparable
     {
         private string senderAddress;
         private string receiverAddress;
@@ -60,17 +60,29 @@ namespace cargo
             get { return distance; }
             set { distance = value > 0 ? value : 1; }
         }
-        public decimal DeliveryPriceCount
+        public virtual double DeliveryPriceCount
         {
-            get { return (decimal)(2.5 * weight * distance); }
+            get { return 2.5 * weight * distance; }
         }
 
         //перевизначення операторів та методу ToString()
         public override string ToString()
         {
             return $"адреса вiдправника: {senderAddress} \nадреса отримувача: {receiverAddress} \nвага: {weight}, " +
-                $"вiдстань транспортування: {distance} \nвартiсть доставки: {DeliveryPriceCount}\n";
+                $"вiдстань транспортування: {distance} \nвартiсть доставки: {DeliveryPriceCount}грн\n";
         }
+        public int CompareTo(object? obj)
+        {
+            Cargo c = obj as Cargo;
+            if (c != null)
+            {
+                if (this.Weight < c.Weight) return -1;
+                else if (this.Weight > c.Weight) return 1;
+                else return 0;
+            }
+            throw new ArgumentException("Not Cargo");
+        }
+
         public static bool operator <(Cargo left, Cargo right)
         {
             return left.weight < right.weight;
@@ -87,25 +99,29 @@ namespace cargo
         {
             return left.senderAddress != sender;
         }
-        public static Cargo operator +(Cargo left, int addDistance)
+        public static Cargo operator +(Cargo left, int addWeight)
         {
-            return new Cargo(left.senderAddress, left.receiverAddress, left.weight, left.distance + addDistance);
+            return new Cargo(left.senderAddress, left.receiverAddress, left.weight + addWeight, left.distance);
         }
         public static Cargo operator +(Cargo left, Cargo right)
         {
-            return new Cargo(left.senderAddress, left.receiverAddress, left.weight, left.distance + right.distance);
-        }
-        public static Cargo operator -(Cargo left, int addDistance)
-        {
-            return new Cargo(left.senderAddress, left.receiverAddress, left.weight, left.distance - addDistance);
-        }
-        public static Cargo operator -(Cargo left, Cargo right)
-        {
-            return new Cargo(left.senderAddress, left.receiverAddress, left.weight, left.distance - right.distance);
+            return new Cargo(left.senderAddress, left.receiverAddress, left.weight + right.weight, left.distance);
         }
 
-        //введення вантажу з консолі
-        public Cargo DialogInput()
+        /*public static Cargo operator -(Cargo left, int addDistance)
+        {
+            return new Cargo(left.senderAddress, left.receiverAddress, left.weight, left.distance - addDistance);
+        }*/
+        /*public static Cargo operator -(Cargo left, Cargo right)
+        {
+            return new Cargo(left.senderAddress, left.receiverAddress, left.weight, left.distance - right.distance);
+        }*/
+        /*public static void PrintCargo(Cargo cargo)
+        {
+            Console.WriteLine(cargo);
+        }*/
+
+        public virtual Cargo DialogInput()
         {
             Console.WriteLine("\nВведіть дані для нового вантажу:");
 
@@ -121,13 +137,7 @@ namespace cargo
 
             return new Cargo(senderAdd, receiverAdd, weight, distance);
         }
-
-        //виведення списку вантажів
-        //public static void PrintCargo(Cargo cargo)
-        //{
-        //    Console.WriteLine(cargo);
-        //}
-        public static void PrintList(List<Cargo> list) 
+        public static void PrintList(List<Cargo> list)
         {
             Console.WriteLine("\nCписок вантажiв:\n");
             foreach (Cargo cargo in list)
