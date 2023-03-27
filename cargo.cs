@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace cargo
 {
-    public class Cargo: IComparable
+    public class Cargo: IComparable, IFormattable
     {
         private string senderAddress;
         private string receiverAddress;
@@ -65,12 +65,51 @@ namespace cargo
             get { return 2.5 * weight * distance; }
         }
 
-        //перевизначення операторів та методу ToString()
+        //перевизначення ToString()
         public override string ToString()
         {
             return $"адреса вiдправника: {senderAddress} \nадреса отримувача: {receiverAddress} \nвага: {weight}, " +
                 $"вiдстань транспортування: {distance} \nвартiсть доставки: {DeliveryPriceCount}грн\n";
         }
+        public virtual string ToString(string format, IFormatProvider provider)
+        {
+            if (string.IsNullOrEmpty(format))
+            {
+                return ToString();
+            }
+
+            string[] symbols = format.Split(' ');
+
+            StringBuilder result = new StringBuilder();
+
+            foreach (string symbol in symbols)
+            {
+                switch (symbol.ToLower())
+                {
+                    case "s":
+                        result.Append($"Адреса вiдправника: {SenderAddress}\n");
+                        break;
+                    case "r":
+                        result.Append($"Адреса отримувача: {ReceiverAddress}\n");
+                        break;
+                    case "w":
+                        result.Append($"Вага: {Weight}\n");
+                        break;
+                    case "d":
+                        result.Append($"Вiдстань транспортування: {Distance}\n");
+                        break;
+                    case "p":
+                        result.Append($"Вартiсть доставки: {DeliveryPriceCount}грн\n");
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            return result.ToString();
+        }
+
+        //перевизначення операторів + CompareTo()
         public int CompareTo(object? obj)
         {
             Cargo c = obj as Cargo;
@@ -82,7 +121,6 @@ namespace cargo
             }
             throw new ArgumentException("Not Cargo");
         }
-
         public static bool operator <(Cargo left, Cargo right)
         {
             return left.weight < right.weight;
@@ -121,6 +159,7 @@ namespace cargo
             Console.WriteLine(cargo);
         }*/
 
+        //введення та вивід вантажів
         public virtual Cargo DialogInput()
         {
             Console.WriteLine("\nВведіть дані для нового вантажу:");

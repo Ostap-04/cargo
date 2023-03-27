@@ -1,12 +1,13 @@
-﻿namespace cargo
+﻿using System.Globalization;
+using System.Runtime.InteropServices;
+
+namespace cargo
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-
             Console.OutputEncoding = System.Text.Encoding.UTF8; //українська мова в консолі
-
 
             //створення екземплярів класу за допомогою конструктора
             Cargo c1 = new Cargo("Address1", "Address2", 10, 100);
@@ -34,11 +35,9 @@
             }
 
             Console.Write("\n**************** Друк всіх елементів контейнера ****************\n");
-
             Cargo.PrintList(cargoList);
 
             Console.Write("\n**************** Пошук вантажу з найменшою вартiстю доставки ****************\n");
-
             int size = cargoList.Count;
             int minDeliveryIndex = 0;
             for (int i = 0; i < size; i++)
@@ -52,11 +51,10 @@
             string strType = cargoType == "Cargo" ? "Простий вантаж" : "Супутній вантаж";
             Console.WriteLine($"\nвантаж з найменшою вартiстю доставки: \n{cargoList[minDeliveryIndex]}Тип вантажу: {strType}\n");
 
-            Console.WriteLine("**************** Використання операторів ****************\n");
+            Console.WriteLine("\n**************** Використання операторів ****************\n");
             //Console.WriteLine(c2 - c1);
             //Console.WriteLine(c4 - c5);
             Console.WriteLine(c1 + 200);
-
             Console.WriteLine(c1 < c2);
             Console.WriteLine(c1 > c7);
 
@@ -72,7 +70,6 @@
             Cargo.PrintList(cargoList);
 
             Console.WriteLine("\n****** Створення нової колекції з одним відправником ******\n");
-
             List<Cargo> senderList = new List<Cargo>();
             Console.WriteLine("Введіть адресу відправника: ");
             string senderTemp = Console.ReadLine();
@@ -80,9 +77,11 @@
             {
                 if (cargo == senderTemp) senderList.Add(cargo);
             }
-            Cargo.PrintList(cargoList);
-            Console.WriteLine("--------------------------------\nАдреса відправника {0}", senderTemp);
-            Cargo.PrintList(senderList);
+            Console.WriteLine("--------------------------------\n");
+            for (int i = 0; i < senderList.Count; i++)
+            {
+                Console.WriteLine(senderList[i].ToString("R w D p %", CultureInfo.CurrentCulture));
+            }
         }
     }
 }

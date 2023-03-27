@@ -10,6 +10,19 @@ namespace cargo
     {
         private uint discount;
 
+        //конструктори
+        public AccompCargo()
+           : base()
+        {
+            discount = 0;
+        }
+        public AccompCargo(string senderAddress, string receiverAddress, double weight, int distance, uint disc)
+            : base(senderAddress, receiverAddress, weight, distance)
+        {
+            discount = disc;
+        }
+
+        //властивості 
         public uint Discount {
             get { return discount; }
             set
@@ -21,19 +34,56 @@ namespace cargo
         }
         public override double DeliveryPriceCount
         {
-            get { return 2.5 * Weight * Distance * (100 - Discount) / 100 ; }
+            get { return (base.DeliveryPriceCount * (100 - discount) / 100); }
         }
 
-        public AccompCargo(): base() { Discount = 0; }
-        public AccompCargo(string senderAddress, string recipientAddress, double weight, int distance, uint discount)
-        :base(senderAddress, recipientAddress, weight, distance) {
-            Discount = discount;
-        }
-
+        //перевизначення ToString()
         public override string ToString()
         {
             return base.ToString() + "Відсоток здешевлення вартості доставки: " + this.Discount + "%\n";
         }
+        public override string ToString(string format, IFormatProvider provider)
+        {
+            if (string.IsNullOrEmpty(format))
+            {
+                return ToString();
+            }
+
+            string[] symbols = format.Split(' ');
+
+            StringBuilder result = new StringBuilder();
+
+            foreach (string symbol in symbols)
+            {
+                switch (symbol.ToLower())
+                {
+                    case "s":
+                        result.Append($"Адреса вiдправника: {SenderAddress}\n");
+                        break;
+                    case "r":
+                        result.Append($"Адреса отримувача: {ReceiverAddress}\n");
+                        break;
+                    case "w":
+                        result.Append($"Вага: {Weight}\n");
+                        break;
+                    case "d":
+                        result.Append($"Вiдстань транспортування: {Distance}\n");
+                        break;
+                    case "p":
+                        result.Append($"Вартiсть доставки: {DeliveryPriceCount}грн\n");
+                        break;
+                    case "%":
+                        result.Append($"Відсоток здешевлення вартості доставки: {this.Discount}%");
+                        break;
+                    default:
+                        throw new FormatException($"The '{symbol}' format specifier is not supported.");
+                }
+            }
+
+            return result.ToString();
+        }
+
+        //ввід даних про вантажі з консолі
         public override AccompCargo DialogInput()
         {
             Console.WriteLine("\nВведіть дані для нового вантажу:");
