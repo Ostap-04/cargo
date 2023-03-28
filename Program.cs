@@ -58,7 +58,7 @@ namespace cargo
             Console.WriteLine(c1 < c2);
             Console.WriteLine(c1 > c7);
 
-            Console.WriteLine("\n**** Збільшення удвічі відсоток здешевлення супутніх вантажів ****\n");
+            Console.WriteLine("\n\n**** Збільшення удвічі відсоток здешевлення супутніх вантажів ****");
             foreach (Cargo cargo in cargoList)
             {
                 if (cargo is AccompCargo)
@@ -80,7 +80,7 @@ namespace cargo
             Console.WriteLine("--------------------------------\n");
             for (int i = 0; i < senderList.Count; i++)
             {
-                Console.WriteLine(senderList[i].ToString("R w D p %", CultureInfo.CurrentCulture));
+                Console.WriteLine(senderList[i].ToString("R w D p %", null));
             }
         }
     }
