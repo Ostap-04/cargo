@@ -6,12 +6,17 @@ using System.Threading.Tasks;
 
 namespace cargo
 {
+    public delegate void DeliveryExpirationHandler(Cargo cargo);
+
     public class Cargo: IComparable, IFormattable
     {
         private string senderAddress;
         private string receiverAddress;
         private double weight;
         private int distance;
+        private int deliveryLeft;
+
+        public event DeliveryExpirationHandler DeliveryExpiration;
 
         //конструктори
         public Cargo()
@@ -20,8 +25,9 @@ namespace cargo
             receiverAddress = "немає даних";
             weight = 0.0;
             distance = 0;
+            deliveryLeft = 0;
         }
-        public Cargo(string senderAddress, string recipientAddress, double weight, int distance)
+        public Cargo(string senderAddress, string recipientAddress, double weight, int distance, int deliveryLeft)
         {
             this.senderAddress = senderAddress;
             this.receiverAddress = recipientAddress;
@@ -31,12 +37,18 @@ namespace cargo
                 this.weight = 1.0;
             }
             else { this.weight = weight; }
-            if (distance <= 0.0)
+            if (distance <= 0)
             {
                 Console.WriteLine("Увага!!! Дистанція повинна бути додатньою!\nЧерез неправильний ввід дистанція рівна 1");
                 this.distance = 1;
             }
             else { this.distance = distance; }
+            if (deliveryLeft <= 0)
+            {
+                Console.WriteLine("Увага!!! Час доставки повинен бути додатнім!\nЧерез неправильний ввід час доставки рівний 1");
+                this.deliveryLeft = 1;
+            }
+            else { this.deliveryLeft = deliveryLeft; }
         }
 
         //властивості
@@ -60,6 +72,11 @@ namespace cargo
             get { return distance; }
             set { distance = value > 0 ? value : 1; }
         }
+        public int DeliveryLeft
+        {
+            get { return deliveryLeft; }
+            set { deliveryLeft = value; }
+        }
         public virtual double DeliveryPriceCount
         {
             get { return 2.5 * weight * distance; }
@@ -68,8 +85,9 @@ namespace cargo
         //перевизначення ToString()
         public override string ToString()
         {
-            return $"адреса вiдправника: {senderAddress} \nадреса отримувача: {receiverAddress} \nвага: {weight}, " +
-                $"вiдстань транспортування: {distance} \nвартiсть доставки: {DeliveryPriceCount}грн\n";
+            return $"адреса вiдправника: {senderAddress} \nадреса отримувача: {receiverAddress} \nвага: {weight}кг, " +
+                $"вiдстань транспортування: {distance} \nвартiсть доставки: {DeliveryPriceCount}грн," +
+                $"\nчас до закінчення доставки: {deliveryLeft} днів\n";
         }
         public virtual string ToString(string format, IFormatProvider provider)
         {
@@ -93,10 +111,13 @@ namespace cargo
                         result.Append($"Адреса отримувача: {ReceiverAddress}\n");
                         break;
                     case "w":
-                        result.Append($"Вага: {Weight}\n");
+                        result.Append($"Вага: {Weight}кг\n");
                         break;
                     case "d":
                         result.Append($"Вiдстань транспортування: {Distance}\n");
+                        break;
+                    case "l":
+                        result.Append($"час до закінчення доставки: {Distance}днів\n");
                         break;
                     case "p":
                         result.Append($"Вартiсть доставки: {DeliveryPriceCount}грн\n");
@@ -139,11 +160,11 @@ namespace cargo
         }
         public static Cargo operator +(Cargo left, int addWeight)
         {
-            return new Cargo(left.senderAddress, left.receiverAddress, left.weight + addWeight, left.distance);
+            return new Cargo(left.senderAddress, left.receiverAddress, left.weight + addWeight, left.distance, left.deliveryLeft);
         }
         public static Cargo operator +(Cargo left, Cargo right)
         {
-            return new Cargo(left.senderAddress, left.receiverAddress, left.weight + right.weight, left.distance);
+            return new Cargo(left.senderAddress, left.receiverAddress, left.weight + right.weight, left.distance, left.deliveryLeft);
         }
 
         /*public static Cargo operator -(Cargo left, int addDistance)
@@ -172,9 +193,11 @@ namespace cargo
             double weight = double.Parse(Console.ReadLine());
             Console.Write("Відстань транспортування: ");
             int distance = int.Parse(Console.ReadLine());
+            Console.Write("Час до закінчення доставки (днів):");
+            int deliveryLeft = int.Parse(Console.ReadLine());
             Console.WriteLine();
 
-            return new Cargo(senderAdd, receiverAdd, weight, distance);
+            return new Cargo(senderAdd, receiverAdd, weight, distance, deliveryLeft);
         }
         public static void PrintList(List<Cargo> list)
         {

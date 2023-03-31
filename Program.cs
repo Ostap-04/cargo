@@ -10,15 +10,15 @@ namespace cargo
             Console.OutputEncoding = System.Text.Encoding.UTF8; //українська мова в консолі
 
             //створення екземплярів класу за допомогою конструктора
-            Cargo c1 = new Cargo("Address1", "Address2", 10, 100);
-            Cargo c2 = new Cargo("Address5", "Address6", 30, 500);
-            Cargo c3 = new Cargo("Address3", "Address4", 20, 300);
-            Cargo c4 = new Cargo("Address2", "Address3", 15, 200);
-            Cargo c5 = new Cargo("Address4", "Address5", 25, 400);
-            Cargo c7 = new Cargo("Address2", "Address5", 47, 467);
-            AccompCargo ac1 = new AccompCargo("Address1", "Address2", 13, 90, 99);
-            AccompCargo ac2 = new AccompCargo("Address2", "Address5", 30, 170, 15);
-            AccompCargo ac3 = new AccompCargo("Address3", "Address1", 124, 50, 13);
+            Cargo c1 = new Cargo("Address1", "Address2", 10, 100, 2);
+            Cargo c2 = new Cargo("Address5", "Address6", 30, 500, 10);
+            Cargo c3 = new Cargo("Address3", "Address4", 20, 300, 6);
+            Cargo c4 = new Cargo("Address2", "Address3", 15, 200, 4);
+            Cargo c5 = new Cargo("Address4", "Address5", 25, 400, 8);
+            Cargo c7 = new Cargo("Address2", "Address5", 47, 467, 9);
+            AccompCargo ac1 = new AccompCargo("Address1", "Address2", 13, 90, 2, 99);
+            AccompCargo ac2 = new AccompCargo("Address2", "Address5", 30, 170, 3, 15);
+            AccompCargo ac3 = new AccompCargo("Address3", "Address1", 124, 50, 1, 13);
 
             List<Cargo> cargoList = new() { c1, c2, c3, c4, c5, c7, ac1, ac2, ac3 };
 
