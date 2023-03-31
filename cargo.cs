@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace cargo
 {
-    public delegate void DeliveryExpirationHandler(Cargo cargo);
-
     public class Cargo: IComparable, IFormattable
     {
         private string senderAddress;
@@ -15,8 +14,6 @@ namespace cargo
         private double weight;
         private int distance;
         private int deliveryLeft;
-
-        public event DeliveryExpirationHandler DeliveryExpiration;
 
         //конструктори
         public Cargo()
@@ -207,6 +204,31 @@ namespace cargo
                 //PrintCargo(cargo);
                 Console.WriteLine(cargo);
             }
+        }
+
+        public delegate void DeliveryEvent(object sender, DeliveryEventArgs args);
+        public event DeliveryEvent DeliveryExpiration;
+
+        public void OnDeliveryExpiration()
+        {
+            //Console.WriteLine("Hello from the dispatcher!");
+            if (DeliveryExpiration != null)
+            {
+                DeliveryEventArgs arg = new(this.DeliveryLeft);
+                DeliveryExpiration(this, arg);
+                if (arg.Msg != string.Empty)
+                    Console.WriteLine(arg.Msg);
+            }
+        }
+    }
+
+    public class DeliveryEventArgs : EventArgs
+    {
+        public int TimeLeft { get; set; }
+        public string Msg { get; set; }
+        public DeliveryEventArgs(int x)
+        {
+            TimeLeft = x;
         }
     }
 }

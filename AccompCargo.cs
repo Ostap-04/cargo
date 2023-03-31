@@ -89,22 +89,10 @@ namespace cargo
         //ввід даних про вантажі з консолі
         public override AccompCargo DialogInput()
         {
-            //Console.WriteLine("\nВведіть дані для нового вантажу:");
-
-            //Console.Write("Адреса відправника: ");
-            //string senderAdd = Console.ReadLine();
-            //Console.Write("Адреса отримувача: ");
-            //string receiverAdd = Console.ReadLine();
-            //Console.Write("Вага: ");
-            //double weight = double.Parse(Console.ReadLine());
-            //Console.Write("Відстань транспортування: ");
-            //int distance = int.Parse(Console.ReadLine());
             Cargo c = base.DialogInput();
             Console.Write("Введіть відсоток здешевлення вартості: ");
             uint discount = uint.Parse(Console.ReadLine());
-            //return new AccompCargo(senderAdd, receiverAdd, weight, distance, discount);
             return new AccompCargo(c.SenderAddress,c.ReceiverAddress, c.Weight, c.Distance, c.DeliveryLeft, discount);
-
-        }
+        }        
     }
 }

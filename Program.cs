@@ -17,8 +17,8 @@ namespace cargo
             Cargo c5 = new Cargo("Address4", "Address5", 25, 400, 8);
             Cargo c7 = new Cargo("Address2", "Address5", 47, 467, 9);
             AccompCargo ac1 = new AccompCargo("Address1", "Address2", 13, 90, 2, 99);
-            AccompCargo ac2 = new AccompCargo("Address2", "Address5", 30, 170, 3, 15);
-            AccompCargo ac3 = new AccompCargo("Address3", "Address1", 124, 50, 1, 13);
+            AccompCargo ac2 = new AccompCargo("Address2", "Address5", 30, 170, 13, 15);
+            AccompCargo ac3 = new AccompCargo("Address3", "Address1", 124, 50, 11, 13);
 
             List<Cargo> cargoList = new() { c1, c2, c3, c4, c5, c7, ac1, ac2, ac3 };
 
@@ -81,6 +81,50 @@ namespace cargo
             for (int i = 0; i < senderList.Count; i++)
             {
                 Console.WriteLine(senderList[i].ToString("R w D p %", null));
+            }
+
+            Console.WriteLine("\n****** Робота з подіями ******\n");
+            foreach (var sender in cargoList)
+                sender.DeliveryExpiration += DealWithDeliveryExpiration;
+            for (int i = 0; i < 15; ++i)
+            {
+                switch (i)
+                {
+                    case 1:
+                        Console.WriteLine($"*** Пройшов {i} день ***\n");
+                        break;
+                    case 2:
+                    case 3:
+                    case 4:
+                        Console.WriteLine($"*** Пройшло {i} дні ***\n");
+                        break;
+                    default:
+                        Console.WriteLine($"*** Пройшло {i} днів *** \n");
+                        break;
+                }
+                foreach (var sender in cargoList)
+                    sender.OnDeliveryExpiration();
+                Console.ReadLine();
+            }
+        }
+
+        public static void DealWithDeliveryExpiration(object sender, DeliveryEventArgs arg)
+        {
+            Cargo c = sender as Cargo;
+            if (c.DeliveryLeft == 0)
+            {
+                arg.Msg += $"Вантаж прибув до отримувача:\n{c}";
+                c.DeliveryExpiration -= DealWithDeliveryExpiration;
+            }
+            else if (c.DeliveryLeft == 2)
+            {
+                arg.Msg += $"Вантаж близько до прибуття, залишилося: {arg.TimeLeft} д.\n{c}";
+                c.DeliveryLeft -= 1;
+            }
+            else
+            {
+                c.DeliveryLeft -= 1;
+                arg.Msg = string.Empty;
             }
         }
     }
